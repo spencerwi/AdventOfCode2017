@@ -8,7 +8,7 @@ let process_lines (checksum_func: int list -> int) (lines: int list list) : int 
     |> List.map checksum_func
     |> List.fold_left (+) 0
 
-let day1a (lines : int list list) : int =
+let day2a (lines : int list list) : int =
     let list_min_max l = 
         let sorted_l = List.sort compare l in
         let min = List.hd sorted_l in
@@ -23,7 +23,7 @@ let day1a (lines : int list list) : int =
     in
     process_lines min_max_checksum lines
 
-let day1b (lines : int list list) : int =
+let day2b (lines : int list list) : int =
     let find_divisible x others =
         let divisible_partner = 
             others 
@@ -49,6 +49,6 @@ let day1b (lines : int list list) : int =
 let () =
     let input = read_input() in
     let print_result = Printf.printf "Day 2%s: %d\n" in
-    day1a input |> print_result "A" ;
-    day1b input |> print_result "B"
+    day2a input |> print_result "A" ;
+    day2b input |> print_result "B"
 
