@@ -1,0 +1,2 @@
+true: package(str), debug
+<day7.*>: package(re), package(mparser), package(mparser.re)
