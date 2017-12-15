@@ -3,4 +3,4 @@
 To compile and run a given day, in the root dir run "make dayX", where X is some number.
 
 ## Dependencies 
-So far, just a working ocaml with ocamlbuild, and opam
+So far, just a working ocaml (>= 4.05.0) with ocamlbuild and opam
