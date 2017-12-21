@@ -10,7 +10,7 @@ let read_lines_from_file (filename: string) : string list =
         close_in chan;
         List.rev !lines
 
-module String = struct 
+module Strings = struct 
     let rec explode_str = function
         | "" -> []
         | s  -> (String.sub s 0 1) :: explode_str (String.sub s 1 (String.length s - 1))
@@ -22,13 +22,13 @@ module String = struct
         String.make 1 c
 end
 
-module Int = struct 
+module Ints = struct 
     let bigger a b =
         if a > b then a else b
 end
 
 
-module List = struct
+module Lists = struct
     let split_at idx l =
         let rec split' i acc = function
             | [] -> (List.rev acc, [])
@@ -51,9 +51,25 @@ module List = struct
         | _::rest -> last rest
 
     let rec flat_map f l = List.flatten @@ List.map f l
+
+    let count_element_occurrences (l: 'a list) : ('a, int) Hashtbl.t =
+        let counts = Hashtbl.create (List.length l) in
+        l |> List.iter (fun next -> 
+            let updated_count = 
+                match Hashtbl.find_opt counts next with
+                | Some cnt -> cnt + 1
+                | None -> 1
+            in
+            Hashtbl.replace counts next updated_count;
+        );
+        counts
+
+    let to_string (l: string list) : string =
+        String.concat "; " l
+        |> Printf.sprintf "[%s]"
 end
 
-module Option = struct
+module Options = struct
     let is_some = function
         | Some _ -> true
         | None -> false
@@ -71,9 +87,17 @@ module Option = struct
     let flatten = function 
         | Some (Some x) -> Some x
         | _ -> None 
+
+    let map f = function
+        | Some x -> Some (f x)
+        | None -> None
+
+    (* Also known as "bind" *)
+    let flat_map f opt =
+        opt |> map f |> flatten
 end
 
-module Stream = struct 
+module Streams = struct 
     let rec take_while (predicate: 'a -> bool) (s: 'a Stream.t) =
         let next = Stream.next s in
         if (predicate next) 
@@ -114,7 +138,7 @@ module Stream = struct
 
 end
 
-module Array = struct
+module Arrays = struct
     let max_index arr = 
         let max_value = ref (-9999999999) in
         let max_index = ref (-1) in
@@ -130,4 +154,17 @@ module Array = struct
     let modify_element arr f idx =
         let previous_value = Array.get arr idx in
         Array.set arr idx (f previous_value)
+end
+
+module Hashtbls = struct
+    let to_assoc_list tbl =
+        Hashtbl.fold (fun a b l -> (a,b) :: l) tbl []
+        |> List.rev
+end
+
+module Debug = struct
+    let tap f x =
+        f x;
+        x
+
 end
