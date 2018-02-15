@@ -1,0 +1,2 @@
+true: package(str), debug
+<day18.*>: package(mparser), package(mparser.re), package(ppx_deriving), package(ppx_deriving.std)
