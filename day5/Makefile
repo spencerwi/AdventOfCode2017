@@ -1,4 +1,4 @@
 ALL: run
 
 run:
-	@./crystal day5.cr
+	@crystal day5.cr
