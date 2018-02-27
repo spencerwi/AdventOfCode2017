@@ -81,12 +81,12 @@ class Predicate
         lhs_val = @lhs.eval(registers)
         rhs_val = @rhs.eval(registers)
         case @comparison_op
-        when .lessThan?             then @lhs < @rhs
-        when .lessThanOrEqual?      then @lhs <= @rhs
-        when .equal?                then @lhs == @rhs
-        when .notEqual?             then @lhs != @rhs
-        when .greaterThanOrEqual?   then @lhs >= @rhs
-        when .greaterThan?          then @lhs > @rhs
+        when .less_than?               then lhs_val <  rhs_val
+        when .less_than_or_equal?      then lhs_val <= rhs_val
+        when .equal?                   then lhs_val == rhs_val
+        when .not_equal?               then lhs_val != rhs_val
+        when .greater_than_or_equal?   then lhs_val >= rhs_val
+        when .greater_than?            then lhs_val >  rhs_val
         else raise "Invalid predicate!"
         end
     end
