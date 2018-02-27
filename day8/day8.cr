@@ -43,10 +43,7 @@ class Predicate
     @comparison_op : ComparisonOperator
     @rhs : Term
 
-    def initialize(lhs : Term, comparison_op : ComparisonOperator, rhs : Term)
-        @lhs = lhs
-        @comparison_op = comparison_op
-        @rhs = rhs
+    def initialize(@lhs : Term, @comparison_op : ComparisonOperator, @rhs : Term)
     end
 
     def self.parse(str : String) : Predicate
@@ -91,11 +88,7 @@ class Instruction
     @amount : Int32
     @predicate : Predicate?
 
-    def initialize(register : String, operation : Operation, amount : Int32, predicate : Predicate?)
-        @register = register
-        @operation = operation
-        @amount = amount
-        @predicate = predicate
+    def initialize(@register : String, @operation : Operation, @amount : Int32, @predicate : Predicate?)
     end
 
     def self.parse(str : String) : Instruction
