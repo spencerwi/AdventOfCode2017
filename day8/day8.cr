@@ -1,42 +1,31 @@
 alias Registers = Hash(String, Int32)
 
-enum TermType
-    Value,
-    Variable
+struct Var
+    property varname : String
+    def initialize(@varname : String) 
+    end
+
+    def eval(registers : Registers)
+        registers.fetch(@varname, 0)
+    end
 end
-class Term
-    @type : TermType
-    getter value : Int32?
-    getter varname : String?   
-
-    protected def initialize(type : TermType, value : Int32?, varname : String?)
-        @type = type
-        @value = value
-        @varname = varname
+struct Val 
+    property value : Int32
+    def initialize(@value : Int32)
     end
 
-    def self.new_val(value : Int32) : Term
-        Term.new(TermType::Value, value, nil)
+    def eval(registers : Registers) # for signature parity with Variable
+        @value
     end
-    
-    def self.new_var(varname : String) : Term
-        Term.new(TermType::Variable, nil, varname)
-    end
-
+end
+alias Term = Var | Val
+class Terms
     def self.parse(str : String) : Term
         begin # try to parse as int
             int_val = str.to_i
-            Term.new_val int_val.not_nil!
+            Val.new int_val.not_nil!
         rescue ArgumentError # not numeric, try varname
-            Term.new_var str
-        end
-    end
-
-    def eval(registers : Registers)  : Int32
-        case @type
-        when TermType::Value then @value.not_nil!
-        when TermType::Variable then registers.fetch(@varname.not_nil!, 0)
-        else raise "Invalid term!"
+            Var.new str
         end
     end
 end
@@ -62,8 +51,8 @@ class Predicate
 
     def self.parse(str : String) : Predicate
         lhs_str, op_str, rhs_str = str.split
-        lhs = Term.parse(lhs_str)
-        rhs = Term.parse(rhs_str)
+        lhs = Terms.parse(lhs_str)
+        rhs = Terms.parse(rhs_str)
         op = 
             case op_str 
             when "<"  then ComparisonOperator::LessThan
