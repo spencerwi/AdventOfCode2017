@@ -81,12 +81,12 @@ class Predicate
         lhs_val = @lhs.eval(registers)
         rhs_val = @rhs.eval(registers)
         case @comparison_op
-        when ComparisonOperator::LessThan           then lhs_val < rhs_val
-        when ComparisonOperator::LessThanOrEqual    then lhs_val <= rhs_val
-        when ComparisonOperator::NotEqual           then lhs_val != rhs_val
-        when ComparisonOperator::Equal              then lhs_val == rhs_val
-        when ComparisonOperator::GreaterThanOrEqual then lhs_val >= rhs_val
-        when ComparisonOperator::GreaterThan        then lhs_val > rhs_val
+        when .lessThan?             then @lhs < @rhs
+        when .lessThanOrEqual?      then @lhs <= @rhs
+        when .equal?                then @lhs == @rhs
+        when .notEqual?             then @lhs != @rhs
+        when .greaterThanOrEqual?   then @lhs >= @rhs
+        when .greaterThan?          then @lhs > @rhs
         else raise "Invalid predicate!"
         end
     end
@@ -133,8 +133,8 @@ class Instruction
             old_value = registers[@register]
             new_value = 
                 case @operation
-                when Operation::Increment then old_value + @amount
-                when Operation::Decrement then old_value - @amount
+                when .increment? then old_value + @amount
+                when .decrement? then old_value - @amount
                 else raise "Invalid operation: #{@operation}"
                 end
             registers[@register] = new_value
